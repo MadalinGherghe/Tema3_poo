@@ -127,6 +127,7 @@ public:
     friend istream& operator>>(istream&,activitate&);
     friend ostream& operator<<(ostream&, activitate&);
     virtual void c_importanta(turist *,int n);
+    virtual float getDurata(){return durata;}
 };
 
 activitate::activitate(const activitate& a)
@@ -176,7 +177,7 @@ public:
         vehicul_necesar=0;accepta_minori=0;
         importanta=0;
     }
-      ~plaja(){
+     virtual ~plaja(){
        delete []nume_activitate;
        delete []tip_plaja;
        delete []nume_plaja;
@@ -497,6 +498,7 @@ class destinatie
 {
 protected:
     int importanta_t,nr_activitati,n_plaja,n_munte,n_muzeu,n_sauna,n_seara,n_activitate_noua;
+    float durata_totala;
     char nume[30];
 public:
      plaja *v1;
@@ -529,19 +531,19 @@ public:
 void destinatie::calc_importanta()
 {
     int i;
-    importanta_t=0;
+    importanta_t=0;durata_totala=0;
     for(i=1;i<=n_plaja;i++)
-        importanta_t+=v1[i].getImportanta();
+        {importanta_t+=v1[i].getImportanta();durata_totala+=v1[i].getDurata();}
     for(i=1;i<=n_munte;i++)
-       importanta_t+=v2[i].getImportanta();
+       {importanta_t+=v2[i].getImportanta();durata_totala+=v2[i].getDurata();}
     for(i=1;i<=n_muzeu;i++)
-        importanta_t+=v3[i].getImportanta();
+        {importanta_t+=v3[i].getImportanta();durata_totala+=v3[i].getDurata();}
     for(i=1;i<=n_sauna;i++)
-        importanta_t+=v4[i].getImportanta();
+        {importanta_t+=v4[i].getImportanta();durata_totala+=v4[i].getDurata();}
     for(i=1;i<=n_seara;i++)
-        importanta_t+=v5[i].getImportanta();
+        {importanta_t+=v5[i].getImportanta();durata_totala+=v5[i].getDurata();}
     for(i=1;i<=n_activitate_noua;i++)
-        importanta_t+=v6[i].getImportanta();
+        {importanta_t+=v6[i].getImportanta();durata_totala+=v6[i].getDurata();}
 }
 
 istream& operator>>(istream& in, destinatie& d){
@@ -577,9 +579,10 @@ istream& operator>>(istream& in, destinatie& d){
 }
 
 ostream& operator<<(ostream& out,destinatie& d){
-    int index,index_vect,n=14,i,j;
-    if(d.nr_activitati<n)n=d.nr_activitati;
-    for(j=1;j<=n;j++)
+    int index,index_vect,n=14,i,j,x=int(d.durata_totala+0.5);
+    if(x<n)n=x;
+    j=1;
+    while(j<=n)
     {
         cout<<"Ziua "<<j<<"\n";
         int maximp=-1;
@@ -601,24 +604,29 @@ ostream& operator<<(ostream& out,destinatie& d){
     {
         case 1:  cout<<d.v1[index];cout<<"\n";
                  d.v1[index].setImportanta(-2);
+                 j+=int(d.v1[index].getDurata()+0.5);
                  break;
         case 2:  cout<<d.v2[index];cout<<"\n";
                  d.v2[index].setImportanta(-2);
+                 j+=int(d.v2[index].getDurata()+0.5);
                  break;
         case 3:  cout<<d.v3[index];cout<<"\n";
                  d.v3[index].setImportanta(-2);
+                 j+=int(d.v3[index].getDurata()+0.5);
                  break;
         case 4:  cout<<d.v4[index];cout<<"\n";
                  d.v4[index].setImportanta(-2);
+                 j+=int(d.v4[index].getDurata()+0.5);
                  break;
         case 5:  cout<<d.v5[index];cout<<"\n";
                  d.v5[index].setImportanta(-2);
+                 j+=int(d.v5[index].getDurata()+0.5);
                  break;
         case 6:  cout<<d.v6[index];cout<<"\n";
                  d.v6[index].setImportanta(-2);
+                 j+=int(d.v6[index].getDurata()+0.5);
                  break;
     }
-
     }
 }
 
